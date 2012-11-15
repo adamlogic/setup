@@ -1,115 +1,137 @@
-# Setup instructions for OS X Lion
+# Setup instructions for OS X Mountain Lion
 
-1.  Back up
+These are my personal instructions for setting up a Ruby development machine. 
+These instructions assume you're rebuilding your machine from scratch. That's 
+just how I roll.
 
-    A few things to think about:
+### Back up
 
-    - media
-      - photos, music, and videos should all be on external drive
-    - projects/code
-      - make sure all Git repos are pushed up
-      - ignored files that should be kept (config files, etc.)
+A few things to think about:
 
-1.  Clean install of OS X Lion
+- media
+  - photos, music, and videos should all be on external drive
+- projects/code
+  - make sure all Git repos are pushed up
+  - ignored files that should be kept (config files, etc.)
+- everything else should either be in Github, DropBox, or Google
 
-    - Boot machine from Lion thumb drive (hold option during startup)
-    - Open Disk Utility and erase primary HD
-    - Begin installation process
+### Clean install of OS X Lion
 
-1.  Run Software Update
+- Boot machine from Mountain Lion thumb drive (hold option during startup)
+- Open Disk Utility and erase primary HD
+- Begin installation process
 
-1.  Install Xcode from App Store
+### Run Software Update
 
-1.  Install [DropBox](http://dropbox.com)
+### Install Xcode from App Store
 
-    - choose advanced install, selective sync, and only sync the "environment"
-      folder
+## While Xcode installs...
 
-1.  Set OS X preferences
+### Install [DropBox](http://dropbox.com)
 
-        ./osx.sh
+Choose advanced install, selective sync, and only sync the "environment"
+folder. We'll sync everything else later, but for now we want the environment 
+stuff as quickly as possible.
 
-    - In Keyboard Preference Pane, map Caps Lock to Control
-    - Some changes won't take effect until reboot
+### Install Non-App Store Apps
 
-1.  Symlink app preferences
+App Store apps will have to wait until Xcode is done.
 
-        cd ../applications
-        rake
+- [Chrome](https://www.google.com/intl/en/chrome/browser/)
+- [LaunchBar](http://www.obdev.at/products/launchbar/index.html)
+- [MacVim](https://github.com/b4winckler/macvim/downloads)
+- [Propane](http://propaneapp.com/)
+- [Things](http://culturedcode.com/things/)
+- [1Password](https://agilebits.com/onepassword/mac)
+- [Skype](http://www.skype.com/intl/en-us/get-skype/)
+- AppZapper
+- GitX
+- PandoraJam
+- Servus
 
-1.  Symlink dotfiles
+### Restore media from external drive
 
-        cd ../dotfiles
-        rake
+### Change shell to zsh
 
-1.  Change shell to zsh
+```shell
+chsh -s /bin/zsh
+```
 
-        chsh -s /bin/zsh
+### Authenticate machine with Github
 
-    - Restart Terminal to load zsh and pick up symlinked prefs
+```shell
+ssh-keygen -t rsa
+```
 
-1.  Install command line tools for Xcode
+- Press enter to accept default name.
+- Provide a memorable passphrase.
 
-    - In Xcode preferences, downloads tab
+```shell
+cat ~/.ssh/id_rsa.pub | pbcopy
+```
 
-1.  Install Homebrew (must have Xcode first)
+Paste ssh key into [github account](https://github.com/account/ssh)
 
-        /usr/bin/ruby -e "$(/usr/bin/curl -fsSL https://raw.github.com/mxcl/homebrew/master/Library/Contributions/install_homebrew.rb)
+### Set OS X preferences *(make sure DropBox is done syncing)*
 
-1.  Install Packages ([ref](http://jfire.io/blog/2012/03/02/xcode-4-dot-3-homebrew-and-ruby))
+```shell
+cd setup
+./osx.sh
+```
 
-        brew install autoconf automake
-        brew install https://raw.github.com/Homebrew/homebrew-dupes/master/apple-gcc42.rb
-        brew install git hub ack ctags-exuberant
+In Keyboard Preference Pane, map Caps Lock to Control. Some changes won't take 
+effect until reboot
 
-1.  Install RVM
+### Symlink app preferences
 
-        curl -L https://get.rvm.io | bash -s stable --ruby
+```shell
+cd ../applications
+rake
+```
 
-1.  Install gems
+### Symlink dotfiles
 
-    - open new terminal window to load RVM
-    - `ruby -v` to ensure the latest Ruby on RVM
+```shell
+cd ../dotfiles
+rake
+```
 
-        gem install bundler pry pry-remote pry-nav awesome_print hirb heroku taps rails
+### Change DropBox preferences to sync all folders
 
-1.  Authenticate machine with Github
+This will take a very long time, but it shouldn't interfere with the rest of 
+the setup process.
 
-        ssh-keygen -t rsa
+## Once Xcode is installed...
 
-    Press enter to accept default name.
-    Provide a memorable passphrase.
+### Install command line tools for Xcode
 
-        cat ~/.ssh/id_rsa.pub | pbcopy
+In Xcode preferences, downloads tab
 
-    Paste ssh key into [github account](https://github.com/account/ssh)
+## While you wait for command line tools...
 
-1.  Install OS X apps
+Install remaining App Store apps. Twiddle thumbs.
 
-    - [Chrome](https://www.google.com/intl/en/chrome/browser/)
-    - [LaunchBar](http://www.obdev.at/products/launchbar/index.html)
-    - [MacVim](https://github.com/b4winckler/macvim/downloads)
-    - [Propane](http://propaneapp.com/)
-    - [Things Beta](http://culturedcode.com/beta/thingscloud/download/)
-    - [Messages](http://www.macrumors.com/2012/06/12/apple-removes-links-to-messages-beta-for-os-x-lion-still-available-via-direct-link/)
-    - [1Password](https://agilebits.com/onepassword/mac)
-    - [Skype](http://www.skype.com/intl/en-us/get-skype/)
-    - [Spotify](http://www.spotify.com/us/start/)
-    - App Store apps
+## Okay, command line tools are installed, down to business...
 
-1.  Change DropBox preferences to sync all folders
+### Install Homebrew *(must have Xcode tools first)*
 
-    Let sit overnight. This will take a very long time.
+Use latest installation instructions [here](http://mxcl.github.com/homebrew/).  
+Run `brew doctor` to make sure you're all set.
 
-1.  Install MySQL
+### Install Packages
 
-        brew install mysql
+```shell
+brew install git hub ack ctags-exuberant
+brew install imagemagick
+brew install postgresql
+```
 
-    Follow instructions printed after install (mysql_install_db and launchctl)
+Be sure to follow the instructions after installing Postgres.
 
-1.  Install Postgres
+### Install RVM
 
-        brew install postgresql
+Use latest installation instructions [here](https://rvm.io/rvm/install/).
 
-    Follow instructions printed after install (initdb and launchctl)
+## That's it!
 
+Do a quick sanity reboot. Don't ask questions.
